@@ -20,7 +20,7 @@ projects:
             repo: https://github.com/daruc/pracownia-jezykow-skryptowych-gr-1
             branch: main
             autoDeployTrigger: commit
-            buildCommand: pip install -r backend/requirements.txt
+            buildCommand: ./tools/build-backend.sh
             startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT backend.app:app
             healthCheckPath: /health
             envVars:
@@ -28,12 +28,6 @@ projects:
                 value: 3.14.0
               - key: CORS_ALLOW_ALL
                 value: "true"
-              - key: PW_DEFAULT_LENGTH
-                value: "16"
-              - key: PW_MIN_LENGTH
-                value: "4"
-              - key: PW_MAX_LENGTH
-                value: "128"
 
           - type: web
             name: expense-tracker-frontend-prod

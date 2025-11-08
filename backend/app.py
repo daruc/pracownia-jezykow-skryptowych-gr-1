@@ -6,12 +6,12 @@ from typing import Optional
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from .config import Config
-from .services.expenses_service import ExpensesService
+from .config import AppConfig
+from .services.expenses import ExpensesService
 
 
 def create_app() -> Flask:
-    cfg = Config.get_instance()
+    cfg = AppConfig.get_singleton()
 
     app = Flask(__name__)
 
@@ -28,7 +28,7 @@ def create_app() -> Flask:
 
     @app.get("/api/v1/expenses")
     def get_expenses():
-        service = ExpensesService.get_instance()
+        service = ExpensesService.get_singleton()
         return jsonify({"expenses": ["expense1", "expense2"]}), 200
 
     return app
