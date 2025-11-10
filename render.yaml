@@ -20,8 +20,8 @@ projects:
             repo: https://github.com/daruc/pracownia-jezykow-skryptowych-gr-1
             branch: main
             autoDeployTrigger: commit
-            buildCommand: ./tools/build-backend.sh
-            startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT backend.app:app
+            buildCommand: make build-backend
+            startCommand: make start-backend
             healthCheckPath: /health
             envVars:
               - key: PYTHON_VERSION
@@ -35,7 +35,7 @@ projects:
             repo: https://github.com/daruc/pracownia-jezykow-skryptowych-gr-1
             branch: main
             autoDeployTrigger: commit
-            buildCommand: cd frontend && npm install && npm run build
+            buildCommand: make build-frontend
             staticPublishPath: frontend/dist
             envVars:
               - key: VITE_API_BASE_URL_PROD
