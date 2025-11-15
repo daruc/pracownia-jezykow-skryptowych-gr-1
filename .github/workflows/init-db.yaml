@@ -14,7 +14,6 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get update && sudo apt-get install -y postgresql-client
 
-      # Używamy innych nazw zmiennych żeby GitHub nie maskował
       - name: Set environment variables
         run: |
           echo "REAL_PG_HOST=${{ secrets.POSTGRES_HOST }}" >> $GITHUB_ENV
@@ -22,21 +21,8 @@ jobs:
           echo "REAL_PG_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
           echo "REAL_PG_PASS=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
-      - name: Create .pgpass
-        run: |
-          echo "$REAL_PG_HOST:5432:$REAL_PG_DB:$REAL_PG_USER:$REAL_PG_PASS" > ~/.pgpass
-          chmod 600 ~/.pgpass
+      - name: Make script executable
+        run: chmod +x run-init.sh
 
-      - name: Test connection
-        run: |
-          PGPASSWORD="$REAL_PG_PASS" \
-          psql "host=$REAL_PG_HOST dbname=$REAL_PG_DB user=$REAL_PG_USER" \
-            -c "SELECT current_database();"
-      
-      - name: Run init.sql
-        run: |
-          echo "Executing init.sql..."
-          PGPASSWORD="$REAL_PG_PASS" \
-          psql "host=$REAL_PG_HOST dbname=$REAL_PG_DB user=$REAL_PG_USER" \
-            -f sql/init.sql
-          echo "✅ init.sql executed successfully"
+      - name: Run init script
+        run: ./run-init.sh
