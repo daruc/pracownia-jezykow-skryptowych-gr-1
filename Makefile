@@ -1,5 +1,5 @@
 
-all: backend frontend
+all: backend frontend tests
 
 # Backend goals
 build-backend:
@@ -18,6 +18,14 @@ start-frontend:
 	bash bash/frontend/start.sh
 
 frontend: start-frontend
+
+tests: backend-tests
+
+# DB tests
+backend-tests: db-tests
+
+db-tests:
+	bash bash/tests/run-db-tests.sh
 
 # Dev goals
 dev: start-backend 

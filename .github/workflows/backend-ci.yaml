@@ -22,11 +22,24 @@ jobs:
       - name: Backend build
         run: make build-backend
 
+  db-tests:
+    name: Database Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Run DB Tests
+        run: make db-tests
+
   deploy:
     name: Deploy to Render
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main')
-    needs: build
+    needs: db-tests
     steps:
       - uses: actions/checkout@v4
       - name: Deploy PROD
