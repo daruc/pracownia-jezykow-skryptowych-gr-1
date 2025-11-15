@@ -15,20 +15,21 @@ jobs:
 
       - name: Create .pgpass
         run: |
-          echo "$POSTGRES_HOST:5432:$POSTGRES_DB:$POSTGRES_USER:$POSTGRES_PASSWORD" > ~/.pgpass
+          echo "$REAL_PG_HOST:5432:$REAL_PG_DB:$REAL_PG_USER:$REAL_PG_PASS" > ~/.pgpass
           chmod 600 ~/.pgpass
         env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          REAL_PG_HOST: ${{ secrets.POSTGRES_HOST }}
+          REAL_PG_DB: ${{ secrets.POSTGRES_DB }}
+          REAL_PG_USER: ${{ secrets.POSTGRES_USER }}
+          REAL_PG_PASS: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Test DB connection
         run: |
-          psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
-            -c "SELECT 1;"
+          PGPASSWORD="$REAL_PG_PASS" \
+          psql -h "$REAL_PG_HOST" -U "$REAL_PG_USER" -d "$REAL_PG_DB" \
+            -c "SELECT current_database();"
         env:
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          REAL_PG_HOST: ${{ secrets.POSTGRES_HOST }}
+          REAL_PG_DB: ${{ secrets.POSTGRES_DB }}
+          REAL_PG_USER: ${{ secrets.POSTGRES_USER }}
+          REAL_PG_PASS: ${{ secrets.POSTGRES_PASSWORD }}
