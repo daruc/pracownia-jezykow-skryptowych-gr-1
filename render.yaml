@@ -21,8 +21,8 @@ projects:
             repo: https://github.com/jezyki-skryptowe-gr-1/pracownia-jezykow-skryptowych-gr-1
             branch: main
             autoDeployTrigger: commit
-            buildCommand: make build-backend
-            startCommand: make start-backend
+            buildCommand: ./tools/build-backend
+            startCommand: ./tools/start-backend
             healthCheckPath: /health
             envVars:
               - key: PYTHON_VERSION
@@ -36,7 +36,7 @@ projects:
             repo: https://github.com/jezyki-skryptowe-gr-1/pracownia-jezykow-skryptowych-gr-1
             branch: main
             autoDeployTrigger: commit
-            buildCommand: make build-frontend
+            buildCommand: ./tools/build-frontend
             staticPublishPath: frontend/dist
             envVars:
               - key: VITE_API_BASE_URL_PROD

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+curl -fsS -X POST "${!1}" && echo "Triggered PROD deploy on Render"
